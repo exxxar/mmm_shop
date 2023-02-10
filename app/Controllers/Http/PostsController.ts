@@ -54,8 +54,7 @@ export default class PostsController {
       await bot.sendMessage(chatId, ads);
       if (photos.length > 1)
         bot.sendMediaGroup(chatId, photos);
-      else {
-        // @ts-ignore
+      else if (photos.length === 1) {
         bot.sendPhoto(chatId, photos[0].media)
       }
 
