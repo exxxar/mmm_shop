@@ -31,7 +31,11 @@ export default class PostsController {
         await image.move(path)
         // @ts-ignore
         photos.push({
+          // @ts-ignore
           type: "photo",
+          // @ts-ignore
+          caption: "Изображение " + (image + 1),
+          // @ts-ignore
           media: fs.createReadStream(Application.tmpPath('uploads') + "/" + image.clientName
         });
       }
@@ -51,11 +55,21 @@ export default class PostsController {
       let ads = `В продажу поступил новый товар! В продаже ${mName} по отличной цене всего ${mPrice} рублей в количестве ${mCount} единиц. ${mDescription}`;
 
       const bot = new TelegramBot(token);
-      await bot.sendMessage(chatId, ads);
-      if (photos.length > 1)
-        bot.sendMediaGroup(chatId, photos);
-      else if (photos.length === 1) {
-        bot.sendPhoto(chatId, photos[0].media)
+      if (photos.length == 0)
+        await bot.sendMessage(chatId, ads);
+
+      if (photos.length > 1) {
+        let message = await bot.sendMessage(chatId, ads);
+
+        //photos[0].caption = ads//.slice(0,1024)
+        bot.sendMediaGroup(chatId, photos, {
+          reply_to_message_id: message.message_id
+        })
+      } else if (photos.length === 1) {
+        // @ts-ignore
+        bot.sendPhoto(chatId, photos[0].media, {
+          caption: ads
+        })
       }
 
 

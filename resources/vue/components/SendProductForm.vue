@@ -56,7 +56,9 @@
     </div>
 
     <div class="mb-3">
-      <button type="submit" class="btn btn-outline-success w-100 p-3">Отправить</button>
+      <button
+        :disabled="isSend"
+        type="submit" class="btn btn-outline-success w-100 p-3">Отправить</button>
     </div>
   </form>
 
@@ -66,7 +68,7 @@
 export default {
   data() {
     return {
-
+      isSend:false,
       form: {
         name: null,
         price: null,
@@ -91,6 +93,7 @@ export default {
     },
 
     submitForm() {
+      this.isSend = true
       let data = new FormData();
       Object.keys(this.form)
         .forEach(key => {
@@ -105,9 +108,10 @@ export default {
         data.append('images[]', this.photos[i]);
 
       axios.post('/upload-form', data).then((response) => {
+        this.isSend = false
         window.location.reload()
       }).catch(err => {
-
+        this.isSend = false
       })
 
     },
