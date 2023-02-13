@@ -30,14 +30,16 @@ export default class PostsController {
 
         await image.move(path)
         // @ts-ignore
-        photos.push({
+        photos.push
+        (
+          {
           // @ts-ignore
           type: "photo",
           // @ts-ignore
           caption: "Изображение " + (image + 1),
           // @ts-ignore
-          media: fs.createReadStream(Application.tmpPath('uploads') + "/" + image.clientName
-        });
+          media: fs.createReadStream
+          (Application.tmpPath('uploads') + "/" + image.clientName)})
       }
 
     let token = Config.get("telegram.telegramBotToken")
