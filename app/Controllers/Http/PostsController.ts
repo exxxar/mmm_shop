@@ -5,6 +5,35 @@ import {schema} from '@ioc:Adonis/Core/Validator'
 import TelegramBot from "node-telegram-bot-api";
 import Application from '@ioc:Adonis/Core/Application'
 import fs from "node:fs";
+import { VK } from 'vk-io';
+const vk = new VK({
+  token: ''
+});
+
+
+async function makeVKPost() {
+  // const response = await vk.api.wall.get({
+  //   owner_id: 1
+  // });
+
+  const response = await vk.api.wall.post({
+    owner_id: -81405266,
+    from_group: 0,
+    message: 'Hello world!'
+  });
+
+
+  // await vk.upload.wallPhoto({
+  //   source: {
+  //     // value: './path/to/cat1.jpg'
+  //     value: '/home/mixa/Загрузки/cola.jpeg'
+  //   }
+  // })
+
+  console.log(response);
+}
+
+
 
 export default class PostsController {
 
@@ -64,9 +93,21 @@ export default class PostsController {
         let message = await bot.sendMessage(chatId, ads);
 
         //photos[0].caption = ads//.slice(0,1024)
-        bot.sendMediaGroup(chatId, photos, {
+        await bot.sendMediaGroup(chatId, photos
+         , {
           reply_to_message_id: message.message_id
-        })
+        }
+        );
+
+        //await bot.editMessageText(chatId, mess, 'blablabla');
+
+        // await bot.editMessageText('blablabla', {
+        //   chat_id: chatId,
+        //   message_id: message.message_id,
+        //   parse_mode: 'HTML',
+        //   disable_web_page_preview: true
+        // })
+
       } else if (photos.length === 1) {
         // @ts-ignore
         bot.sendPhoto(chatId, photos[0].media, {
@@ -78,6 +119,8 @@ export default class PostsController {
     } catch (error) {
       response.badRequest(error.messages)
     }
+
+    makeVKPost().catch(console.log);
   }
 
 
