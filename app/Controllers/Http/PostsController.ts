@@ -7,7 +7,8 @@ import Application from '@ioc:Adonis/Core/Application'
 import fs from "node:fs";
 import { VK } from 'vk-io';
 const vk = new VK({
-  token: ''
+  // token: process.env.VK_TOKEN
+  token: Config.get("vk.vkToken")
 });
 
 
