@@ -40,6 +40,7 @@
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21",
+    "telegram": "^2.15.5",
     "vue": "^3.2.36",
     "vue-router": "^4.0.13",
     "vue3-lazyload": "^0.3.6"

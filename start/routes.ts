@@ -21,13 +21,15 @@
 import Route from '@ioc:Adonis/Core/Route'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+Route.get('/test', 'PostsController.test')
+  .as('test')
+
 Route.post('/upload-form', 'PostsController.store')
   .as('store')
 
 Route.get('/', async ({ view }: HttpContextContract) => {
   return view.render('index')
 }).as('index')
-
 
 Route.get('*', async ({ view }: HttpContextContract) => {
   return view.render('index')

@@ -5,8 +5,45 @@ import {schema} from '@ioc:Adonis/Core/Validator'
 import TelegramBot from "node-telegram-bot-api";
 import Application from '@ioc:Adonis/Core/Application'
 import fs from "node:fs";
+import {Api, TelegramClient} from 'telegram';
+import {StringSession} from "telegram/sessions";
 
 export default class PostsController {
+
+  async telegram(){
+
+    const apiId = 28671589
+    const apiHash = 'b35cc51e56481c5cc586fea60bdab9f0'
+    const stringSession = ''; // leave this empty for now
+    const BOT_TOKEN = Config.get("telegram.telegramBotToken"); // put your bot token here
+    (async () => {
+      const client = new TelegramClient(new StringSession(stringSession),
+        apiId, apiHash, {connectionRetries: 5});
+      await client.start({
+        botAuthToken: BOT_TOKEN
+      });
+      console.log(client.session.save())
+
+      const result = await client.invoke(
+        new Api.messages.SendMessage({
+          peer: "exxxar",
+          message: "Hello there!",
+          // @ts-ignore
+          randomId: BigInt("-4156887774564"),
+          noWebpage: true,
+          noforwards: true,
+          //scheduleDate: 43,
+          sendAs: "exxxar",
+        })
+      );
+      console.log(result); // prints the result
+    })();
+
+  }
+
+  async test(){
+    await this.telegram();
+  }
 
   async store({request, response}) {
 
@@ -36,7 +73,7 @@ export default class PostsController {
           // @ts-ignore
           caption: "Изображение " + (image + 1),
           // @ts-ignore
-          media: fs.createReadStream(Application.tmpPath('uploads') + "/" + image.clientName
+          media: fs.createReadStream(Application.tmpPath('uploads') + "/" + image.clientName),
         });
       }
 
@@ -71,6 +108,7 @@ export default class PostsController {
           caption: ads
         })
       }
+
 
 
     } catch (error) {
